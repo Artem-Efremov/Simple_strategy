@@ -1,5 +1,6 @@
 from time import sleep
 from sys import stdout
+import random
 
 
 class Represent:
@@ -40,21 +41,32 @@ class Game:
             print('Incorect answer! Value must be a number greater then zero')
 
 
-class Computer:
-    pass
-
-
-class User:
+class Player:
 
     counter = 1
 
     def __init__(self):
-        load_msg = 'Preparing User {}'.format(User.counter)
+        self.identify = 'Player {}'.format(Player.counter)
+        load_msg = 'Preparing {}'.format(self.identify)
         Represent.progress_bar(msg=load_msg, repeat=5)
+        Player.counter += 1
 
-    def set_user_name(self):
-        self.name = input('User {}, select your name: '.format(User.counter))
-        User.counter += 1
+    def set_player_name(self, name):
+        self.name = name
+
+
+class Computer(Player):
+
+    def set_player_name(self):
+        name = random.choice(['Трус', 'Балбес', 'Бывалый'])
+        super().set_player_name(name)
+
+
+class User(Player):
+
+    def set_player_name(self):
+        name = input('{}, select your name: '.format(self.identify))
+        super().set_player_name(name)
 
 
 class Wariors:
@@ -75,10 +87,13 @@ def main():
     army_size = game.set_army_size()
 
     user1 = game_mode[0]()
-    user1.set_user_name()
+    user1.set_player_name()
 
     user2 = game_mode[1]()
-    user2.set_user_name()
+    user2.set_player_name()
+
+    print(user1.name)
+    print(user2.name)
 
 
 if __name__ == '__main__':
