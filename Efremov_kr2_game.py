@@ -3,14 +3,6 @@ from sys import stdout
 import random
 
 
-NICKNAMES = ['Mammoth', 'Lobster', 'Highlander', 'Mastodon', 'Slug',
-             'Prawn', 'Canine', 'Spider', 'Taz', 'Ratman', 'Hammerhead',
-             'Sabre-Tooth', 'Sabertooth', 'Gecko', 'Bear', 'Zee-donk',
-             'Dragon', 'Yak', 'Viper', 'Vulture', 'Thunderbird', 'Fish',
-             'Dino', 'Froggy', 'Jackal', 'T-Rex', 'Wasp', 'Megalodon',
-             'Raptor', 'Snake', 'Hound Dog', 'Bandicoot', 'Wildcat',
-             'Bulldog', 'Gator', 'Husky', 'Catfish', 'Trunk', 'Dingo',
-             'Bird', 'Bull', 'Longhorn']
 
 
 class Represent:
@@ -27,8 +19,8 @@ class Represent:
 
 class Game:
 
-    def set_game_mode(self):
-
+    @staticmethod
+    def set_game_mode():
         while True:
             print('Select game mode:\n1. U vs. C\n2. U vs. U\n3. C vs. C\n')
             modes = {'1': (User, Computer),
@@ -39,7 +31,8 @@ class Game:
                 return game_mode
             print('Incorect answer. Try again!')
 
-    def set_army_size(self):
+    @staticmethod
+    def set_army_size():
         while True:
             try:
                 army_size = int(input('Max size of army: '))
@@ -58,9 +51,12 @@ class Player:
 
     def __init__(self):
         self.identify = 'Player {}'.format(Player.counter)
+        self.army = []
+
         # load_msg = 'Preparing {}'.format(self.identify)
-        # Represent.progress_bar(msg=load_msg, repeat=5)
         Player.counter += 1
+
+        # Represent.progress_bar(msg=load_msg, repeat=5)
 
     def set_player_name(self, name):
         Player.reserved_names.append(name)
@@ -76,6 +72,17 @@ class Computer(Player):
                 super().set_player_name(name)
                 break
 
+    def create_army(self, empty_slots, complexity=1):
+        army = []
+        empty_slots *= complexity
+        for squad in SQUADS[:-1]:
+            q_pers = random.randint(0, empty_slots)
+            army.append((squad, q_pers))
+            empty_slots -= q_pers
+        if empty_slots > 0:
+            army.append((SQUADS[-1], empty_slots))
+        self.army = army
+
 
 class User(Player):
 
@@ -88,11 +95,11 @@ class User(Player):
             print('This name already exists! Select another.')
 
 
-class Wariors:
+class Warior:
     pass
 
 
-class Archers:
+class Archer:
     pass
 
 
@@ -101,18 +108,34 @@ class Mage:
 
 
 def main():
-    game = Game()
-    game_mode = game.set_game_mode()
-    # army_size = game.set_army_size()
+    players = Game.set_game_mode()
+    army_size = Game.set_army_size()
 
-    user1 = game_mode[0]()
-    user1.set_player_name()
+    player1 = players[0]()
+    player1.set_player_name()
+    player1.create_army(army_size)
 
-    user2 = game_mode[1]()
-    user2.set_player_name()
+    player2 = players[1]()
+    player2.set_player_name()
+    player2.create_army(army_size)
 
-    print(user1.name)
-    print(user2.name)
+    print(player1.name)
+    print(player1.army)
+
+    print(player2.name)
+    print(player2.army)
+
+
+NICKNAMES = ['Mammoth', 'Lobster', 'Highlander', 'Mastodon', 'Slug',
+             'Prawn', 'Canine', 'Spider', 'Taz', 'Ratman', 'Hammerhead',
+             'Sabre-Tooth', 'Sabertooth', 'Gecko', 'Bear', 'Zee-donk',
+             'Dragon', 'Yak', 'Viper', 'Vulture', 'Thunderbird', 'Fish',
+             'Dino', 'Froggy', 'Jackal', 'T-Rex', 'Wasp', 'Megalodon',
+             'Raptor', 'Snake', 'Hound Dog', 'Bandicoot', 'Wildcat',
+             'Bulldog', 'Gator', 'Husky', 'Catfish', 'Trunk', 'Dingo',
+             'Bird', 'Bull', 'Longhorn']
+
+SQUADS = [Warior, Archer, Mage]
 
 
 if __name__ == '__main__':
