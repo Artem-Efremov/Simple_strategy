@@ -3,6 +3,16 @@ from sys import stdout
 import random
 
 
+NICKNAMES = ['Mammoth', 'Lobster', 'Highlander', 'Mastodon', 'Slug',
+             'Prawn', 'Canine', 'Spider', 'Taz', 'Ratman', 'Hammerhead',
+             'Sabre-Tooth', 'Sabertooth', 'Gecko', 'Bear', 'Zee-donk',
+             'Dragon', 'Yak', 'Viper', 'Vulture', 'Thunderbird', 'Fish',
+             'Dino', 'Froggy', 'Jackal', 'T-Rex', 'Wasp', 'Megalodon',
+             'Raptor', 'Snake', 'Hound Dog', 'Bandicoot', 'Wildcat',
+             'Bulldog', 'Gator', 'Husky', 'Catfish', 'Trunk', 'Dingo',
+             'Bird', 'Bull', 'Longhorn']
+
+
 class Represent:
 
     @staticmethod
@@ -44,29 +54,38 @@ class Game:
 class Player:
 
     counter = 1
+    reserved_names = []
 
     def __init__(self):
         self.identify = 'Player {}'.format(Player.counter)
-        load_msg = 'Preparing {}'.format(self.identify)
-        Represent.progress_bar(msg=load_msg, repeat=5)
+        # load_msg = 'Preparing {}'.format(self.identify)
+        # Represent.progress_bar(msg=load_msg, repeat=5)
         Player.counter += 1
 
     def set_player_name(self, name):
+        Player.reserved_names.append(name)
         self.name = name
 
 
 class Computer(Player):
 
     def set_player_name(self):
-        name = random.choice(['Трус', 'Балбес', 'Бывалый'])
-        super().set_player_name(name)
+        while True:
+            name = random.choice(NICKNAMES)
+            if name not in self.reserved_names:
+                super().set_player_name(name)
+                break
 
 
 class User(Player):
 
     def set_player_name(self):
-        name = input('{}, select your name: '.format(self.identify))
-        super().set_player_name(name)
+        while True:
+            name = input('{}, select your name: '.format(self.identify))
+            if name not in self.reserved_names:
+                super().set_player_name(name)
+                break
+            print('This name already exists! Select another.')
 
 
 class Wariors:
@@ -84,7 +103,7 @@ class Mage:
 def main():
     game = Game()
     game_mode = game.set_game_mode()
-    army_size = game.set_army_size()
+    # army_size = game.set_army_size()
 
     user1 = game_mode[0]()
     user1.set_player_name()
