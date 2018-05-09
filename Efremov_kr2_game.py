@@ -3,8 +3,6 @@ from sys import stdout
 import random
 
 
-
-
 class Represent:
 
     @staticmethod
@@ -94,6 +92,24 @@ class User(Player):
                 break
             print('This name already exists! Select another.')
 
+    def create_army(self, empty_slots):
+        army = []
+        for squad in SQUADS:
+            while empty_slots:
+                try:
+                    q_pers = int(input('Select quantity of the ' +
+                                            squad.__name__ + 's: '))
+                except ValueError:
+                    print('Incorect answer! Value must be an integer number')
+                    continue
+                if 0 <= q_pers <= empty_slots:
+                    break
+                print('Incorect answer! Value must be a number from range ' +
+                      '[0, {}]'.format(empty_slots))
+            army.append((squad, q_pers))
+            empty_slots -= q_pers
+        self.army = army
+
 
 class Warior:
     pass
@@ -126,17 +142,22 @@ def main():
     print(player2.army)
 
 
-NICKNAMES = ['Mammoth', 'Lobster', 'Highlander', 'Mastodon', 'Slug',
-             'Prawn', 'Canine', 'Spider', 'Taz', 'Ratman', 'Hammerhead',
-             'Sabre-Tooth', 'Sabertooth', 'Gecko', 'Bear', 'Zee-donk',
-             'Dragon', 'Yak', 'Viper', 'Vulture', 'Thunderbird', 'Fish',
-             'Dino', 'Froggy', 'Jackal', 'T-Rex', 'Wasp', 'Megalodon',
-             'Raptor', 'Snake', 'Hound Dog', 'Bandicoot', 'Wildcat',
-             'Bulldog', 'Gator', 'Husky', 'Catfish', 'Trunk', 'Dingo',
-             'Bird', 'Bull', 'Longhorn']
+NICKNAMES = ['Bad Mr. Frosty', 'Kraken', 'Boomer', 'Lumberjack', 'Boss',
+             'Boomerang', 'Mammoth', 'Master', 'Mastadon', 'Budweiser',
+             'Bullseye', 'Meatball', 'Buster', 'Mooch', 'Butch', 'Buzz',
+             'Mr. President', 'Outlaw', 'Canine', 'Ratman', 'Renegade',
+             'Captian RedBeard', 'Champ', 'Sabertooth', 'Coma', 'Speed',
+             'Scratch', 'Crusher', 'Diesel', 'Sentinel', 'Frankenstein',
+             'Subwoofer', 'Doctor', 'Spike', 'Dreads',  'Thunderbird',
+             'Froggy', 'Tornado', 'General', 'Troubleshoot', 'Godzilla',
+             'Wizard', 'Hammerhead', 'Viper', 'King Kong', 'Hound Dog',
+             'Zodiac', 'Handy Man', 'Indominus', 'Vice', 'Wasp']
 
 SQUADS = [Warior, Archer, Mage]
 
 
 if __name__ == '__main__':
     main()
+
+
+
