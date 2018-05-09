@@ -10,8 +10,8 @@ class Player:
     reserved_names = []
 
     def __init__(self):
-        self.identify = 'Player {}'.format(Player.counter)
         self.army = []
+        self.identify = 'Player {}'.format(Player.counter)
 
         load_msg = 'Preparing {}'.format(self.identify)
         Player.counter += 1
@@ -21,9 +21,6 @@ class Player:
     def set_player_name(self, name):
         Player.reserved_names.append(name)
         self.name = name
-
-    def battle(self, other):
-        pass
 
 
 class Computer(Player):
@@ -39,11 +36,11 @@ class Computer(Player):
         army = []
         empty_slots *= complexity
         for squad in squads.SQUADS[:-1]:
-            q_pers = random.randint(0, empty_slots)
-            army.append((squad, q_pers))
-            empty_slots -= q_pers
+            squad_size = random.randint(0, empty_slots)
+            army.append(squad(squad_size))
+            empty_slots -= squad_size
         if empty_slots > 0:
-            army.append((squads.SQUADS[-1], empty_slots))
+            army.append(squads.SQUADS[-1](empty_slots))
         self.army = army
 
 
@@ -61,16 +58,17 @@ class User(Player):
         army = []
         for squad in squads.SQUADS:
             while empty_slots > 0:
-                value = input('Select quantity of the ' + squad.__name__ + 's: ')
+                value = input('Select quantity of the ' + squad.__name__ + ': ')
                 if not Checker.check_str_loks_like_int_num(value):
                     continue
-                q_pers = int(value)
-                if 0 <= q_pers <= empty_slots:
-                    if q_pers != 0:
-                        army.append((squad, q_pers))
-                        empty_slots -= q_pers
+                squad_size = int(value)
+                if 0 <= squad_size <= empty_slots:
+                    if squad_size != 0:
+                        army.append(squad(squad_size))
+                        empty_slots -= squad_size
                     break
-                print('Incorect answer! Value must be a number from range [0, {}]'.format(empty_slots))
+                print('Incorect answer! Value must be a number from range ' +
+                      '[0, {}]'.format(empty_slots))
         self.army = army
 
 

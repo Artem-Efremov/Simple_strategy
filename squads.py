@@ -1,13 +1,18 @@
-class Warior:
+class Units:
+    def __init__(self, squad_size):
+        self.squad_size = squad_size
+
+
+class Wariors(Units):
     pass
 
 
-class Archer:
+class Archers(Units):
     pass
 
 
-class Mage:
+class Mages(Units):
     pass
 
 
-SQUADS = (Warior, Archer, Mage)
+SQUADS = (Wariors, Archers, Mages)

@@ -1,4 +1,5 @@
 from players import User, Computer
+from representation import Represent
 from check import Checker
 
 
@@ -27,6 +28,10 @@ class Game:
                 return army_size
             print('Incorect answer! Value must be a number greater then zero')
 
+    @staticmethod
+    def battle(player1, player2):
+        Represent.progress_bar('Loading', 0.5, 20)
+
 
 def main():
     players = Game.set_game_mode()
@@ -40,13 +45,16 @@ def main():
     player2.set_player_name()
     player2.create_army(army_size)
 
-    player1.battle(player2)
+    Game.battle(player1, player2)
 
     print(player1.name)
-    print(player1.army)
+
+    for squad in player1.army:
+        print(squad.squad_size)
 
     print(player2.name)
-    print(player2.army)
+    for squad in player2.army:
+        print(squad.squad_size)
 
 
 if __name__ == '__main__':
