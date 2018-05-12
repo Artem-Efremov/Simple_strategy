@@ -30,7 +30,17 @@ class Game:
 
     @staticmethod
     def battle(player1, player2):
-        Represent.progress_bar('Loading', 0.5, 20)
+        print('Start battle')
+        lap = 1
+        while True:
+            squad1 = player1.get_next_squad()
+            squad2 = player2.get_next_squad()
+            if not squad1 or not squad2:
+                break
+            print('Round {}'.format(lap))
+            print(squad1.__class__.__name__, 'vs', squad2.__class__.__name__)
+            squad1.fight(squad2)
+            lap += 1
 
 
 def main():
@@ -45,16 +55,17 @@ def main():
     player2.set_player_name()
     player2.create_army(army_size)
 
+    # Represent.progress_bar('Loading', 0.5, 20)
     Game.battle(player1, player2)
 
-    print(player1.name)
+    # print(player1.name)
 
-    for squad in player1.army:
-        print(squad.squad_size)
+    # for squad in player1.army:
+    #     print(squad.__name__, squad.squad_size)
 
-    print(player2.name)
-    for squad in player2.army:
-        print(squad.squad_size)
+    # print(player2.name)
+    # for squad in player2.army:
+    #     print(squad.__name__, squad.squad_size)
 
 
 if __name__ == '__main__':

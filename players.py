@@ -16,11 +16,16 @@ class Player:
         load_msg = 'Preparing {}'.format(self.identify)
         Player.counter += 1
 
-        Represent.progress_bar(msg=load_msg, repeat=5)
+        # Represent.progress_bar(msg=load_msg, repeat=5)
 
     def set_player_name(self, name):
         Player.reserved_names.append(name)
         self.name = name
+
+    def get_next_squad(self):
+        for squad in self.army:
+            if squad.squad_size != 0:
+                return squad
 
 
 class Computer(Player):
