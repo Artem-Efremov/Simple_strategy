@@ -1,10 +1,12 @@
-from math import ceil
+from math import floor
+from representation import Represent
 
 
 class Units:
 
     def __init__(self, squad_size):
         self.squad_size = squad_size
+        self.casualties = 0
 
     def get_coeficient(self, other):
         table = {
@@ -22,15 +24,15 @@ class Units:
 
     def fight(self, other):
         coef1, coef2 = self.get_coeficient(other)
-        force1 = ceil(coef1 * self.squad_size)
-        print('squad1 power: {}'.format(force1))
-        force2 = ceil(coef2 * other.squad_size)
-        print('squad2 power: {}'.format(force1))
+        force1 = floor(coef1 * self.squad_size)
+        # print('squad1 power: {}'.format(force1))
+        force2 = floor(coef2 * other.squad_size)
+        # print('squad2 power: {}'.format(force2))
 
-        self.casualties = min(self.squad_size, force2)
-        print('squad1 casualties: {}'.format(self.casualties))
-        other.casualties = min(other.squad_size, force1)
-        print('squad2 casualties: {}'.format(other.casualties))
+        Represent.progress_bar(msg='Fighting', repeat=5)
+
+        self.casualties += min(self.squad_size, force2)
+        other.casualties += min(other.squad_size, force1)
 
         self.squad_size = max(0, self.squad_size - force2)
         other.squad_size = max(0, other.squad_size - force1)

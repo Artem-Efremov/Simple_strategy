@@ -6,5 +6,19 @@ class Checker:
             int(str_value)
             return True
         except ValueError:
-            print('Incorect answer! Value must be an integer number')
+            print('\nIncorect answer! Value must be an integer number.')
+            print('Try again!\n')
             return False
+
+    @staticmethod
+    def check_number_in_range(number, start=1, end=None):
+        if end and end > start:
+            msg = 'Value must be a number in range [{},{}].'.format(start, end)
+            if start <= number <= end:
+                return True
+        else:
+            msg = 'Value must be a number greater then {}.'.format(start)
+            if number >= start:
+                return True
+        print('\nIncorect answer! {}\nTry again!\n'.format(msg))
+        return False
