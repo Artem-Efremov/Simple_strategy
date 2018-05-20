@@ -10,35 +10,36 @@ class Units:
 
     def get_coeficient(self, other):
         table = {
-            (Wariors, Archers): (2, 0.5),
+            (Warriors, Archers): (2, 0.5),
             (Archers, Mages): (2, 0.5),
-            (Mages, Wariors): (2, 0.5),
-            (Archers, Wariors): (0.5, 2),
+            (Mages, Warriors): (2, 0.5),
+            (Archers, Warriors): (0.5, 2),
             (Mages, Archers): (0.5, 2),
-            (Wariors, Mages): (0.5, 2),
-            (Wariors, Wariors): (1, 1),
+            (Warriors, Mages): (0.5, 2),
+            (Warriors, Warriors): (1, 1),
             (Archers, Archers): (1, 1),
             (Mages, Mages): (1, 1),
         }
         return table.get((type(self), type(other)))
 
+    @Represent.fight_decorator
     def fight(self, other):
+        start_size = (self.squad_size, other.squad_size)
+
         coef1, coef2 = self.get_coeficient(other)
         force1 = floor(coef1 * self.squad_size)
-        # print('squad1 power: {}'.format(force1))
         force2 = floor(coef2 * other.squad_size)
-        # print('squad2 power: {}'.format(force2))
-
-        Represent.progress_bar(msg='Fighting', repeat=5)
 
         self.casualties += min(self.squad_size, force2)
         other.casualties += min(other.squad_size, force1)
 
         self.squad_size = max(0, self.squad_size - force2)
         other.squad_size = max(0, other.squad_size - force1)
+        return {'casualties': (self.casualties, other.casualties),
+                'start_size': start_size}
 
 
-class Wariors(Units):
+class Warriors(Units):
     pass
 
 
@@ -50,4 +51,4 @@ class Mages(Units):
     pass
 
 
-SQUADS = (Wariors, Archers, Mages)
+SQUADS = (Warriors, Archers, Mages)

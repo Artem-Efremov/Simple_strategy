@@ -1,4 +1,5 @@
 from check import Checker
+from representation import Represent
 import squads
 import random
 
@@ -9,9 +10,10 @@ class Player:
     reserved_names = []
 
     def __init__(self):
-        self.army = []
         self.identify = 'Player {}'.format(Player.counter)
+        Represent.progress_bar(msg='Preparing {}'.format(self.identify), repeat=5)
         Player.counter += 1
+        self.army = []
 
     def set_player_name(self, name):
         self.name = name
@@ -65,7 +67,7 @@ class User(Player):
     def set_player_name(self):
         while True:
             name = input('{}, select your name: '.format(self.identify))
-            if name not in self.reserved_names:
+            if Checker.check_length(name, 3) and name not in self.reserved_names:
                 super().set_player_name(name)
                 break
             print('This name already exists! Select another.')
@@ -77,10 +79,8 @@ class User(Player):
                 if not Checker.check_str_loks_like_int_num(value):
                     continue
                 squad_size = int(value)
-                if 0 <= squad_size <= empty_slots:
+                if Checker.check_number_in_range(squad_size, 0, empty_slots):
                     if squad_size != 0:
                         self.army.append(squad(squad_size))
                         empty_slots -= squad_size
                     break
-                print('Incorect answer! Value must be a number from range ' +
-                      '[0, {}]'.format(empty_slots))
