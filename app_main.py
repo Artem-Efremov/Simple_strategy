@@ -1,7 +1,6 @@
 from players import User, Computer
 from representation import Represent
 from check import Checker
-# from time import sleep
 
 
 class Game:
