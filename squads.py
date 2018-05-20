@@ -6,7 +6,8 @@ class Units:
 
     def __init__(self, squad_size):
         self.squad_size = squad_size
-        self.casualties = 0
+        self.total_casualties = 0
+        self.last_round_casualties = 0
 
     def get_coeficient(self, other):
         table = {
@@ -24,19 +25,18 @@ class Units:
 
     @Represent.fight_decorator
     def fight(self, other):
-        start_size = (self.squad_size, other.squad_size)
-
         coef1, coef2 = self.get_coeficient(other)
         force1 = floor(coef1 * self.squad_size)
         force2 = floor(coef2 * other.squad_size)
 
-        self.casualties += min(self.squad_size, force2)
-        other.casualties += min(other.squad_size, force1)
+        self.last_round_casualties = min(self.squad_size, force2)
+        other.last_round_casualties = min(other.squad_size, force1)
 
-        self.squad_size = max(0, self.squad_size - force2)
-        other.squad_size = max(0, other.squad_size - force1)
-        return {'casualties': (self.casualties, other.casualties),
-                'start_size': start_size}
+        self.total_casualties += self.last_round_casualties
+        other.total_casualties += other.last_round_casualties
+
+        self.squad_size -= self.last_round_casualties
+        other.squad_size -= other.last_round_casualties
 
 
 class Warriors(Units):

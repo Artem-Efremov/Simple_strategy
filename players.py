@@ -67,10 +67,10 @@ class User(Player):
     def set_player_name(self):
         while True:
             name = input('{}, select your name: '.format(self.identify))
-            if Checker.check_length(name, 3) and name not in self.reserved_names:
+            if (Checker.check_name_is_not_exist(name, self.reserved_names)
+                                            and Checker.check_length(name, 3)):
                 super().set_player_name(name)
                 break
-            print('This name already exists! Select another.')
 
     def create_army(self, empty_slots):
         for squad in squads.SQUADS:

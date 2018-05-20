@@ -29,3 +29,10 @@ class Checker:
             return True
         print('\nIncorect value! Name length must be greater then {}.'.format(length))
         return False
+
+    @staticmethod
+    def check_name_is_not_exist(name, reserved_names):
+        if name not in reserved_names:
+            return True
+        print('This name already exists! Select another.')
+        return False

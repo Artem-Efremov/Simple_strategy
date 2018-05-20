@@ -5,9 +5,6 @@ from check import Checker
 
 class Game:
 
-    def __init__(self):
-        self.rounds = []
-
     def set_game_mode(self):
         modes = ((User, Computer), (User, User), (Computer, Computer))
         pattern = '{i}. {p[0].__name__} vs. {p[1].__name__}'
@@ -37,7 +34,7 @@ class Game:
             p2_squad = player2.get_next_squad()
             if not p1_squad or not p2_squad:
                 break
-            self.rounds.append(p1_squad.fight(p2_squad, player1, player2, lap))
+            p1_squad.fight(p2_squad, player1, player2, lap)
             lap += 1
 
 
